@@ -1,67 +1,193 @@
 import 'package:flutter/material.dart';
-void main() {
-  runApp(MyApp());
-}
+
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
+    const String appTitle = 'Flutter layout demo';
     return MaterialApp(
+      title: appTitle,
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Container Widget Example'),
+          title: const Text(appTitle),
         ),
-        body: Center(
-          child: Container(
-          height: 220,
-          width: double.infinity,
-          margin: const EdgeInsets.all(16.0),
-          padding: const EdgeInsets.all(16.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-             gradient: const LinearGradient(
-              colors: [
-                Color.fromARGB(255, 0, 255, 204),
-                Color.fromARGB(255, 2, 250, 27),
-                Color.fromARGB(255, 255, 247, 0),
-                Color.fromARGB(255, 255, 0, 0)
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight
-             )
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Title: Flutter Stuff',
-                style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-              const SizedBox(height: 8),
-              const Divider(color: Colors.black),
-              const Text(
-                'Description: This is a card-like layout using a Container widget. It has padding, margin, and a box shadow.',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                  height: 40,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('visit to read more',
-                      style: TextStyle(color: Color.fromARGB(255, 0, 0, 0),))))
-            ],
-          ),
-        ),
+        body: const SingleChildScrollView(
+  child: Column(
+    
+    children: [
+      ImageSection(
+    image: 'r90.jpg',
+  ),TitleSection(
+      
+    name: 'Ronaldo Nazario',
+    location: 'Brazil,Real madrid',
+  ),
+   
+   ButtonSection(),
+   TextSection(
+    description:
+        'Ronaldo Luís Nazário de Lima, dikenal sebagai Ronaldo '
+        'atau Ronaldo Nazário, adalah mantan pemain sepak bola '
+        'profesional Brasil yang bermain sebagai striker. Dia adalah'
+        'pemilik klub Brasileiro Série A Cruzeiro dan pemilik serta '
+        'presiden klub Segunda División Real Valladolid. ',
+  ),]
         ),
       ),
+    ),
     );
-    
+  }
+}
+class TitleSection extends StatelessWidget {
+  const TitleSection({
+    super.key,
+    required this.name,
+    required this.location,
+  });
+
+  final String name;
+  final String location;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(32),
+      child: Row(
+        children: [
+          Expanded(
+            /*1*/
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /*2*/
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Text(
+                  location,
+                  style: TextStyle(
+                    color: Colors.grey[500],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          /*3*/
+          Icon(
+            Icons.star,
+            color: Colors.red[500],
+          ),
+          const Text('41'),
+        ],
+      ),
+    );
+  }
+}
+class ButtonSection extends StatelessWidget {
+  const ButtonSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final Color color = Theme.of(context).primaryColor;
+    return SizedBox(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ButtonWithText(
+            color: color,
+            icon: Icons.call,
+            label: 'CALL',
+          ),
+          ButtonWithText(
+            color: color,
+            icon: Icons.near_me,
+            label: 'ROUTE',
+          ),
+          ButtonWithText(
+            color: color,
+            icon: Icons.share,
+            label: 'SHARE',
+          ),
+        ],
+      ),
+    );
+  }
+}
+class TextSection extends StatelessWidget {
+  const TextSection({
+    super.key,
+    required this.description,
+  });
+
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(32),
+      child: Text(
+        description,
+        softWrap: true,
+      ),
+    );
+  }
+}
+
+class ButtonWithText extends StatelessWidget {
+  const ButtonWithText({
+    super.key,
+    required this.color,
+    required this.icon,
+    required this.label,
+  });
+
+  final Color color;
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, color: color),
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: color,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+class ImageSection extends StatelessWidget {
+  const ImageSection({super.key, required this.image});
+
+  final String image;
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      image,
+      width: 600,
+      height: 240,
+      fit: BoxFit.cover,
+    );
   }
 }
